@@ -10,7 +10,16 @@ export default defineComponent({
 
 <template>
 	<main-layout>
-		<router-view />
+		<router-view v-slot="{ Component }">
+			<template v-if="Component">
+				<Suspense>
+					<component :is="Component" />
+					<template #fallback>
+						<div>Loading...</div>
+					</template>
+				</Suspense>
+			</template>
+		</router-view>
 	</main-layout>
 </template>
 
