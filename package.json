@@ -1,0 +1,38 @@
+{
+  "name": "finals",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "vite preview",
+    "test:types": "vue-tsc",
+    "lint": "eslint --fix '**/*.{js,ts,vue}' && prettier --write '**/*.{json,scss,yml}'"
+  },
+  "dependencies": {
+    "vue": "~3.2.47",
+    "vue-router": "~4.1.6"
+  },
+  "devDependencies": {
+    "@tsconfig/node18": "~2.0.0",
+    "@types/node": "~18.15.12",
+    "@typescript-eslint/eslint-plugin": "~5.59.0",
+    "@typescript-eslint/parser": "~5.59.0",
+    "@vitejs/plugin-vue": "~4.1.0",
+    "@vue/eslint-config-prettier": "~7.1.0",
+    "@vue/eslint-config-typescript": "~11.0.2",
+    "eslint": "~8.38.0",
+    "eslint-config-prettier": "~8.8.0",
+    "eslint-plugin-prettier": "~4.2.1",
+    "eslint-plugin-simple-import-sort": "~10.0.0",
+    "eslint-plugin-vue": "~9.11.0",
+    "prettier": "~2.8.7",
+    "sass": "~1.62.0",
+    "typescript": "~5.0.4",
+    "vite": "~4.3.0",
+    "vite-plugin-pages": "~0.29.0",
+    "vite-tsconfig-paths": "~4.2.0",
+    "vue-tsc": "~1.2.0"
+  }
+}
