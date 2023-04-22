@@ -11,6 +11,11 @@ export function add_category(data: Omit<Category, "id">) {
 
 export function delete_category(id: string) {
 	store.categories = store.categories.filter((cat) => cat.id !== id)
+	for (const exp of store.expenses) {
+		if (exp.category_id === id) {
+			exp.category_id = null
+		}
+	}
 }
 
 /** все категории, отсортированные  */

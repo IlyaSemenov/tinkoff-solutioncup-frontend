@@ -21,6 +21,13 @@ export function load_store(store: Store) {
 			for (const exp of store.expenses) {
 				exp.amount ??= 0
 			}
+			// проверить целостность по ID
+			const category_ids = new Set(store.categories.map((cat) => cat.id))
+			for (const exp of store.expenses) {
+				if (exp.category_id && !category_ids.has(exp.category_id)) {
+					exp.category_id = null
+				}
+			}
 		} catch {
 			// ignore
 		}
