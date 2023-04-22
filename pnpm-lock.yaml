@@ -19,6 +19,7 @@ specifiers:
   lodash: ~4.17.21
   prettier: ~2.8.7
   sass: ~1.62.0
+  ts-essentials: ~9.3.1
   typescript: ~5.0.4
   uuid: ~9.0.0
   vite: ~4.3.0
@@ -33,6 +34,7 @@ dependencies:
   '@types/uuid': 9.0.1
   dayjs: 1.11.7
   lodash: 4.17.21
+  ts-essentials: 9.3.1_typescript@5.0.4
   uuid: 9.0.0
   vue: 3.2.47
   vue-router: 4.1.6_vue@3.2.47
@@ -1933,6 +1935,14 @@ packages:
       is-number: 7.0.0
     dev: true
 
+  /ts-essentials/9.3.1_typescript@5.0.4:
+    resolution: {integrity: sha512-9CChSvQMyVRo29Vb1A2jbs+LKo3d/bAf+ndSaX0T8cEiy/HChVaRN/HY5DqUryZ8hZ6uol9bEgCnGmnDbwBR9Q==}
+    peerDependencies:
+      typescript: '>=4.1.0'
+    dependencies:
+      typescript: 5.0.4
+    dev: false
+
   /tsconfck/2.1.1_typescript@5.0.4:
     resolution: {integrity: sha512-ZPCkJBKASZBmBUNqGHmRhdhM8pJYDdOXp4nRgj/O0JwUwsMq50lCDRQP/M5GBNAA0elPrq4gAeu4dkaVCuKWww==}
     engines: {node: ^14.13.1 || ^16 || >=18}
@@ -1976,7 +1986,6 @@ packages:
     resolution: {integrity: sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==}
     engines: {node: '>=12.20'}
     hasBin: true
-    dev: true
 
   /uri-js/4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}

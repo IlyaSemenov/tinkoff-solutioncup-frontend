@@ -1,20 +1,20 @@
 <script lang="ts">
 import dayjs from "dayjs"
-import { isEqual, sumBy } from "lodash"
+import { isEqual } from "lodash"
+import { ElementOf } from "ts-essentials"
 import { computed, defineComponent, reactive, ref } from "vue"
 
-import ExpenseForm from "@/components/ExpenseForm.vue"
-import {
-	all_categories,
-	all_expenses,
-	category_for_id,
-	delete_expense as delete_expense_impl,
-} from "@/services"
-import { Expense } from "@/types"
+import ExpensesTable from "@/components/ExpensesTable.vue"
+import { all_categories, all_expenses, category_for_id } from "@/services"
 
 export default defineComponent({
-	components: { ExpenseForm },
+	components: { ExpensesTable },
 	setup() {
+		const view_types = ["list", "group_category"] as const
+		type ViewType = ElementOf<typeof view_types>
+		/** текущее отображение */
+		const view_type = ref<ViewType>("list")
+
 		const params = reactive<{
 			date_from: string
 			date_to: string
@@ -35,50 +35,27 @@ export default defineComponent({
 			Object.assign(params, initial_params)
 		}
 
-		const has_changed_params = computed(() => !isEqual(params, initial_params))
+		const has_params = computed(() => !isEqual(params, initial_params))
 
-		const expenses = computed(() => {
-			const expenses = all_expenses.value.filter((exp) => {
+		const expenses = computed(() =>
+			all_expenses.value.filter((exp) => {
 				return !params.category_id || params.category_id === exp.category_id
 			})
-			const total_amount = sumBy(expenses, "amount")
-			return { expenses, total_amount }
-		})
-
-		const editing_expense = ref<Expense>()
-
-		function edit_expense(exp: Expense) {
-			editing_expense.value = exp
-		}
-
-		function saved() {
-			editing_expense.value = undefined
-		}
-
-		function canceled() {
-			editing_expense.value = undefined
-		}
-
-		function delete_expense(exp: Expense) {
-			if (confirm(`Удалить расход?`)) {
-				delete_expense_impl(exp.id)
-			}
-		}
+		)
 
 		return {
-			dayjs,
+			view_type,
+			view_types,
+			// расходы
 			all_expenses,
 			expenses,
 			all_categories,
 			category_for_id,
+			dayjs,
+			// фильтр
 			params,
 			reset_params,
-			has_changed_params,
-			edit_expense,
-			editing_expense,
-			saved,
-			canceled,
-			delete_expense,
+			has_params,
 		}
 	},
 })
@@ -86,45 +63,11 @@ export default defineComponent({
 
 <template>
 	<h1>Мои расходы</h1>
-	<div v-if="all_expenses.length" class="expenses-with-filter">
+	<div class="expenses-with-filter">
 		<div>
-			<table v-if="expenses.expenses.length">
-				<thead>
-					<th>Время добавления</th>
-					<th>Дата</th>
-					<th>Сумма</th>
-					<th>Категория</th>
-					<th>Описание</th>
-					<th />
-				</thead>
-				<tr v-for="exp in expenses.expenses" :key="exp.id">
-					<td>{{ dayjs(exp.time).format("DD.MM.YYYY HH:mm") }}</td>
-					<td>{{ dayjs(exp.date).format("DD.MM.YYYY") }}</td>
-					<td class="amount">{{ exp.amount.toFixed(2) }}</td>
-					<td :class="{ _empty: !exp.category_id }">
-						{{
-							exp.category_id
-								? category_for_id[exp.category_id].name
-								: "(без категории)"
-						}}
-					</td>
-					<td :class="{ _empty: !exp.description }">
-						{{ exp.description || "(без описания)" }}
-					</td>
-					<td>
-						<button type="button" @click="edit_expense(exp)">Изменить</button>
-						<button type="button" @click="delete_expense(exp)">Удалить</button>
-					</td>
-				</tr>
-				<tr v-if="expenses.expenses.length > 1" class="total">
-					<td colspan="2" class="total-label">Итого</td>
-					<td class="amount">{{ expenses.total_amount.toFixed(2) }}</td>
-					<td colspan="3" />
-				</tr>
-			</table>
-			<div v-else>Ничего не найдено. Попробуйте сбросить фильтр.</div>
+			<expenses-table :expenses="expenses" :has_params="has_params" />
 		</div>
-		<form @submit.prevent>
+		<form v-if="all_categories.length" @submit.prevent>
 			<h4>Фильтр</h4>
 			<div>
 				<div>Дата:</div>
@@ -146,19 +89,11 @@ export default defineComponent({
 				</select>
 			</div>
 			<div>
-				<button
-					type="button"
-					:disabled="!has_changed_params"
-					@click="reset_params"
-				>
+				<button type="button" :disabled="!has_params" @click="reset_params">
 					Сбросить фильтр
 				</button>
 			</div>
 		</form>
-	</div>
-	<div v-else class="notification">Вы пока не добавили ни один расход.</div>
-	<div class="form-wrapper">
-		<expense-form :expense="editing_expense" @save="saved" @cancel="canceled" />
 	</div>
 </template>
 
@@ -166,25 +101,5 @@ export default defineComponent({
 .expenses-with-filter {
 	display: flex;
 	gap: 1rem;
-}
-
-td.amount {
-	text-align: right;
-}
-
-td._empty {
-	font-style: italic;
-}
-
-tr.total {
-	font-weight: bold;
-}
-
-td.total-label {
-	text-align: right;
-}
-
-.form-wrapper {
-	margin-top: 1rem;
 }
 </style>
