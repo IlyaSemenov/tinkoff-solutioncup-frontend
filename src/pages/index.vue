@@ -41,7 +41,11 @@ export default defineComponent({
 
 		const expenses = computed(() =>
 			all_expenses.value.filter((exp) => {
-				return !params.category_id || params.category_id === exp.category_id
+				return (
+					(!params.date_from || exp.date >= params.date_from) &&
+					(!params.date_to || exp.date <= params.date_to) &&
+					(!params.category_id || params.category_id === exp.category_id)
+				)
 			})
 		)
 
@@ -99,13 +103,8 @@ export default defineComponent({
 			<h4>Фильтр</h4>
 			<div>
 				<div>Дата:</div>
-				<div>с <input type="date" /></div>
-				<div>по <input type="date" /></div>
-			</div>
-			<div>
-				<div>Время добавления:</div>
-				<div>- с <input type="datetime-local" /></div>
-				<div>- по <input type="datetime-local" /></div>
+				<div>с <input v-model="params.date_from" type="date" /></div>
+				<div>по <input v-model="params.date_to" type="date" /></div>
 			</div>
 			<div>
 				<div>Категория:</div>
