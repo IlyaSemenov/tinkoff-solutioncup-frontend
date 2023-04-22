@@ -1,4 +1,5 @@
 <script lang="ts">
+import { orderBy } from "lodash"
 import { computed, defineComponent } from "vue"
 
 import * as services from "@/services"
@@ -7,7 +8,7 @@ import { Category } from "@/types"
 
 export default defineComponent({
 	setup() {
-		const categories = computed(() => store.categories)
+		const categories = computed(() => orderBy(store.categories, "name"))
 		function add_category() {
 			const name = prompt("Название категории?")
 			if (name) {
