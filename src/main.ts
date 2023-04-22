@@ -8,7 +8,7 @@ import { load_store, store, watch_store_and_save } from "@/store"
 import routes from "~pages"
 
 const router = createRouter({
-	history: createWebHistory(),
+	history: createWebHistory(import.meta.env.BASE_URL),
 	routes,
 })
 
