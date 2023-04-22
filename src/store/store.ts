@@ -1,6 +1,6 @@
-import { Category, Operation } from "@/types"
+import { Category, Expense } from "@/types"
 
 export interface Store {
-	operations: Operation[]
 	categories: Category[]
+	expenses: Expense[]
 }

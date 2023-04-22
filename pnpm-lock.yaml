@@ -10,6 +10,7 @@ specifiers:
   '@vitejs/plugin-vue': ~4.1.0
   '@vue/eslint-config-prettier': ~7.1.0
   '@vue/eslint-config-typescript': ~11.0.2
+  dayjs: ~1.11.7
   eslint: ~8.38.0
   eslint-config-prettier: ~8.8.0
   eslint-plugin-prettier: ~4.2.1
@@ -30,6 +31,7 @@ specifiers:
 dependencies:
   '@types/lodash': 4.14.194
   '@types/uuid': 9.0.1
+  dayjs: 1.11.7
   lodash: 4.17.21
   uuid: 9.0.0
   vue: 3.2.47
@@ -838,6 +840,10 @@ packages:
 
   /csstype/2.6.21:
     resolution: {integrity: sha512-Z1PhmomIfypOpoMjRQB70jfvy/wxT50qW08YXO5lMIJkrdq4yOTR+AW7FqutScmB9NkLwxo+jU+kZLbofZZq/w==}
+
+  /dayjs/1.11.7:
+    resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
+    dev: false
 
   /de-indent/1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}

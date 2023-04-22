@@ -17,6 +17,10 @@ export function load_store(store: Store) {
 			const value = JSON.parse(data)
 			// TODO: валидировать что вообще пришло, например через zod
 			Object.assign(store, value)
+			// по быстрому смигрировать "старые" данные
+			for (const exp of store.expenses) {
+				exp.amount ??= 0
+			}
 		} catch {
 			// ignore
 		}
