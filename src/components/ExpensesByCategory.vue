@@ -1,11 +1,13 @@
 <script lang="ts">
 import { groupBy, orderBy, sumBy } from "lodash"
 import { computed, defineComponent, PropType } from "vue"
+import { Bar } from "vue-chartjs"
 
 import { category_for_id } from "@/services"
 import { Expense } from "@/types"
 
 export default defineComponent({
+	components: { Bar },
 	props: {
 		expenses: { type: Array as PropType<Expense[]>, required: true },
 	},
@@ -23,28 +25,48 @@ export default defineComponent({
 				"desc"
 			)
 		})
-		return { categories }
+
+		const chart_data = computed(() => ({
+			labels: categories.value.map((cat) =>
+				cat.category ? cat.category.name : "(без категории)"
+			),
+			datasets: [
+				{
+					label: "Категория",
+					data: categories.value.map((cat) => cat.total_amount),
+					backgroundColor: "#f87979",
+				},
+			],
+		}))
+
+		return {
+			categories,
+			chart_data,
+		}
 	},
 })
 </script>
 
 <template>
-	<table v-if="categories.length">
-		<thead>
-			<tr>
-				<th>Категория</th>
-				<th>Общая сумма</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr v-for="cat in categories" :key="cat.category?.id || 'others'">
-				<td :class="{ _empty: !cat.category }">
-					{{ cat.category ? cat.category.name : "(без категории)" }}
-				</td>
-				<td class="amount">{{ cat.total_amount.toFixed(2) }}</td>
-			</tr>
-		</tbody>
-	</table>
+	<div v-if="categories.length">
+		<table>
+			<thead>
+				<tr>
+					<th>Категория</th>
+					<th>Общая сумма</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="cat in categories" :key="cat.category?.id || 'others'">
+					<td :class="{ _empty: !cat.category }">
+						{{ cat.category ? cat.category.name : "(без категории)" }}
+					</td>
+					<td class="amount">{{ cat.total_amount.toFixed(2) }}</td>
+				</tr>
+			</tbody>
+		</table>
+		<Bar :data="chart_data" />
+	</div>
 	<div v-else>Нет данных. Попробуйте сбросить фильтр.</div>
 </template>
 
