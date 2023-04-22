@@ -31,7 +31,7 @@ export default defineComponent({
 		<table>
 			<thead>
 				<th>Категория</th>
-				<th>Удалить</th>
+				<th />
 			</thead>
 			<tr v-for="cat in all_categories" :key="cat.id">
 				<td>{{ cat.name }}</td>

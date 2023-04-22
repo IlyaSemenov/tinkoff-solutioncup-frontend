@@ -14,5 +14,15 @@ export function delete_expense(id: string) {
 	store.expenses = store.expenses.filter((exp) => exp.id !== id)
 }
 
+export function patch_expense(
+	id: string,
+	data: Partial<Omit<Expense, "id" | "time">>
+) {
+	const expense = store.expenses.find((exp) => exp.id === id)
+	if (expense) {
+		Object.assign(expense, data)
+	}
+}
+
 /** все расходы */
 export const all_expenses = computed(() => store.expenses)

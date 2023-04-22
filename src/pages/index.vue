@@ -1,13 +1,14 @@
 <script lang="ts">
 import dayjs from "dayjs"
 import { isEqual, sumBy } from "lodash"
-import { computed, defineComponent, reactive } from "vue"
+import { computed, defineComponent, reactive, ref } from "vue"
 
-import NewExpenseForm from "@/components/NewExpenseForm.vue"
+import ExpenseForm from "@/components/ExpenseForm.vue"
 import { all_categories, all_expenses, category_for_id } from "@/services"
+import { Expense } from "@/types"
 
 export default defineComponent({
-	components: { NewExpenseForm },
+	components: { ExpenseForm },
 	setup() {
 		const params = reactive<{
 			date_from: string
@@ -39,6 +40,16 @@ export default defineComponent({
 			return { expenses, total_amount }
 		})
 
+		const editing_expense = ref<Expense>()
+
+		function saved() {
+			editing_expense.value = undefined
+		}
+
+		function canceled() {
+			editing_expense.value = undefined
+		}
+
 		return {
 			dayjs,
 			all_expenses,
@@ -48,6 +59,9 @@ export default defineComponent({
 			params,
 			reset_params,
 			has_changed_params,
+			editing_expense,
+			saved,
+			canceled,
 		}
 	},
 })
@@ -64,6 +78,7 @@ export default defineComponent({
 					<th>Сумма</th>
 					<th>Категория</th>
 					<th>Описание</th>
+					<th />
 				</thead>
 				<tr v-for="exp in expenses.expenses" :key="exp.id">
 					<td>{{ dayjs(exp.time).format("DD.MM.YYYY HH:mm") }}</td>
@@ -79,10 +94,17 @@ export default defineComponent({
 					<td :class="{ _empty: !exp.description }">
 						{{ exp.description || "(без описания)" }}
 					</td>
+					<td>
+						<button type="button" @click="editing_expense = exp">
+							Изменить
+						</button>
+						<button type="button">Удалить</button>
+					</td>
 				</tr>
 				<tr v-if="expenses.expenses.length > 1" class="total">
 					<td colspan="2" class="total-label">Итого</td>
 					<td class="amount">{{ expenses.total_amount.toFixed(2) }}</td>
+					<td colspan="3" />
 				</tr>
 			</table>
 			<div v-else>Ничего не найдено. Попробуйте сбросить фильтр.</div>
@@ -120,7 +142,9 @@ export default defineComponent({
 		</form>
 	</div>
 	<div v-else class="notification">Вы пока не добавили ни один расход.</div>
-	<new-expense-form />
+	<div class="form-wrapper">
+		<expense-form :expense="editing_expense" @save="saved" @cancel="canceled" />
+	</div>
 </template>
 
 <style lang="scss" scoped>
@@ -143,5 +167,9 @@ tr.total {
 
 td.total-label {
 	text-align: right;
+}
+
+.form-wrapper {
+	margin-top: 1rem;
 }
 </style>

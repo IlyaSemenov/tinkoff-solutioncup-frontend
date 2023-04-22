@@ -33,6 +33,8 @@ module.exports = {
 				"vue/no-template-shadow": "off",
 				// разрешить вот_такие_свойства
 				"vue/prop-name-casing": "off",
+				// разрешить свойства без дефолтов
+				"vue/require-default-prop": "off",
 			},
 		},
 	],
