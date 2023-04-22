@@ -1,12 +1,11 @@
 <script lang="ts">
 import dayjs from "dayjs"
-import { sumBy } from "lodash"
+import { orderBy, sumBy } from "lodash"
+import { ElementOf } from "ts-essentials"
 import { computed, defineComponent, PropType, ref } from "vue"
 
 import ExpenseForm from "@/components/ExpenseForm.vue"
 import {
-	all_categories,
-	all_expenses,
 	category_for_id,
 	delete_expense as delete_expense_impl,
 } from "@/services"
@@ -20,6 +19,15 @@ export default defineComponent({
 	},
 	setup(props) {
 		const total_amount = computed(() => sumBy(props.expenses, "amount"))
+
+		const sort_columns = ["time", "date"] as const
+		type SortColumn = ElementOf<typeof sort_columns>
+		/** сортировка по колонке */
+		const sort_column = ref<SortColumn>("time")
+
+		const sorted_expenses = computed(() =>
+			orderBy(props.expenses, sort_column.value)
+		)
 
 		const editing_expense = ref<Expense>()
 
@@ -42,11 +50,11 @@ export default defineComponent({
 		}
 
 		return {
-			total_amount,
-			all_expenses,
-			all_categories,
+			sort_column,
+			sorted_expenses,
 			category_for_id,
 			dayjs,
+			total_amount,
 			edit_expense,
 			editing_expense,
 			saved,
@@ -58,16 +66,28 @@ export default defineComponent({
 </script>
 
 <template>
-	<table v-if="expenses.length">
+	<table v-if="sorted_expenses.length">
 		<thead>
-			<th>Время добавления</th>
-			<th>Дата</th>
+			<th
+				class="sort"
+				:class="{ _active: sort_column === 'time' }"
+				@click="sort_column = 'time'"
+			>
+				Время добавления
+			</th>
+			<th
+				class="sort"
+				:class="{ _active: sort_column === 'date' }"
+				@click="sort_column = 'date'"
+			>
+				Дата
+			</th>
 			<th>Сумма</th>
 			<th>Категория</th>
 			<th>Описание</th>
 			<th />
 		</thead>
-		<tr v-for="exp in expenses" :key="exp.id">
+		<tr v-for="exp in sorted_expenses" :key="exp.id">
 			<td>{{ dayjs(exp.time).format("DD.MM.YYYY HH:mm") }}</td>
 			<td>{{ dayjs(exp.date).format("DD.MM.YYYY") }}</td>
 			<td class="amount">{{ exp.amount.toFixed(2) }}</td>
@@ -107,6 +127,15 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
+th.sort {
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	cursor: pointer;
+	&._active:after {
+		content: "▾";
+	}
+}
+
 td.amount {
 	text-align: right;
 }
