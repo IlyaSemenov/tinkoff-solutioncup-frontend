@@ -4,16 +4,17 @@ import { isEqual } from "lodash"
 import { ElementOf } from "ts-essentials"
 import { computed, defineComponent, reactive, ref } from "vue"
 
+import ExpensesByCategory from "@/components/ExpensesByCategory.vue"
 import ExpensesTable from "@/components/ExpensesTable.vue"
 import { all_categories, all_expenses, category_for_id } from "@/services"
 
 export default defineComponent({
-	components: { ExpensesTable },
+	components: { ExpensesTable, ExpensesByCategory },
 	setup() {
-		const view_types = ["list", "group_category"] as const
+		const view_types = ["table", "by_category"] as const
 		type ViewType = ElementOf<typeof view_types>
 		/** текущее отображение */
-		const view_type = ref<ViewType>("list")
+		const view_type = ref<ViewType>("table")
 
 		const params = reactive<{
 			date_from: string
@@ -65,7 +66,25 @@ export default defineComponent({
 	<h1>Мои расходы</h1>
 	<div class="expenses-with-filter">
 		<div>
-			<expenses-table :expenses="expenses" :has_params="has_params" />
+			<div class="tabs">
+				<label
+					><input v-model="view_type" type="radio" value="table" />
+					Список</label
+				>
+				<label
+					><input v-model="view_type" type="radio" value="by_category" /> По
+					категориям</label
+				>
+			</div>
+			<expenses-table
+				v-if="view_type === 'table'"
+				:expenses="expenses"
+				:has_params="has_params"
+			/>
+			<expenses-by-category
+				v-else-if="view_type === 'by_category'"
+				:expenses="expenses"
+			/>
 		</div>
 		<form v-if="all_categories.length" @submit.prevent>
 			<h4>Фильтр</h4>
@@ -99,6 +118,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .expenses-with-filter {
+	display: flex;
+	gap: 1rem;
+}
+
+.tabs {
 	display: flex;
 	gap: 1rem;
 }

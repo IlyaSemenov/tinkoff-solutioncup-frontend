@@ -1,8 +1,7 @@
 <script lang="ts">
 import dayjs from "dayjs"
-import { isEqual, sumBy } from "lodash"
-import { ElementOf } from "ts-essentials"
-import { computed, defineComponent, PropType, reactive, ref } from "vue"
+import { sumBy } from "lodash"
+import { computed, defineComponent, PropType, ref } from "vue"
 
 import ExpenseForm from "@/components/ExpenseForm.vue"
 import {
