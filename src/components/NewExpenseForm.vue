@@ -9,19 +9,26 @@ import type { Expense } from "@/types"
 export default defineComponent({
 	setup() {
 		const fields = reactive<
-			Pick<Expense, "date" | "category_id" | "description">
+			Pick<Expense, "date" | "category_id" | "description"> & {
+				amount: number | null
+			}
 		>({
 			date: dayjs().format(iso_date_format),
 			category_id: null,
 			description: "",
+			amount: null,
 		})
 
 		function submit() {
+			const { amount } = fields
+			if (!(amount !== null && amount >= 0)) {
+				return
+			}
+
 			const problems = []
 			if (!fields.category_id) {
 				problems.push("без указания категории")
 			}
-
 			if (!fields.description) {
 				problems.push("без описания")
 			}
@@ -32,7 +39,7 @@ export default defineComponent({
 				return
 			}
 
-			add_expense(fields)
+			add_expense({ ...fields, amount })
 			fields.description = ""
 		}
 		return { fields, all_categories, submit }
@@ -44,6 +51,16 @@ export default defineComponent({
 	<form @submit.prevent="submit">
 		<div>
 			<input v-model="fields.date" type="date" placeholder="Дата" required />
+			<input
+				v-model.number="fields.amount"
+				type="number"
+				step="0.01"
+				min="0"
+				placeholder="Сумма"
+			/>
+		</div>
+		<div>
+			<input v-model="fields.description" placeholder="Описание" />
 			<select v-model="fields.category_id">
 				<option :value="null">- Выберите категорию -</option>
 				<option v-for="cat in all_categories" :key="cat.id" :value="cat.id">
@@ -51,7 +68,6 @@ export default defineComponent({
 				</option>
 			</select>
 		</div>
-		<div>Описание: <input v-model="fields.description" /></div>
 		<button type="submit">Добавить</button>
 	</form>
 </template>
