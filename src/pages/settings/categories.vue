@@ -5,6 +5,7 @@ import {
 	add_category as add_category_impl,
 	all_categories,
 	delete_category as delete_category_impl,
+	patch_category,
 } from "@/services"
 import { Category } from "@/types"
 
@@ -23,7 +24,14 @@ export default defineComponent({
 			}
 		}
 
-		return { all_categories, add_category, delete_category }
+		function rename_category(cat: Category) {
+			const name = prompt("Название категории?", cat.name)
+			if (name) {
+				patch_category(cat.id, { name })
+			}
+		}
+
+		return { all_categories, add_category, delete_category, rename_category }
 	},
 })
 </script>
@@ -36,7 +44,9 @@ export default defineComponent({
 				<th />
 			</thead>
 			<tr v-for="cat in all_categories" :key="cat.id">
-				<td>{{ cat.name }}</td>
+				<td>
+					<span class="name" @click="rename_category(cat)">{{ cat.name }}</span>
+				</td>
 				<td>
 					<button type="button" @click="delete_category(cat)">Удалить</button>
 				</td>
@@ -45,3 +55,11 @@ export default defineComponent({
 		<button type="button" @click="add_category">Добавить категорию</button>
 	</div>
 </template>
+
+<style lang="scss" scoped>
+.name {
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	cursor: pointer;
+}
+</style>

@@ -18,6 +18,16 @@ export function delete_category(id: string) {
 	}
 }
 
+export function patch_category(
+	id: string,
+	data: Partial<Omit<Category, "id">>
+) {
+	const cat = store.categories.find((cat) => cat.id === id)
+	if (cat) {
+		Object.assign(cat, data)
+	}
+}
+
 /** все категории, отсортированные  */
 export const all_categories = computed(() => orderBy(store.categories, "name"))
 
