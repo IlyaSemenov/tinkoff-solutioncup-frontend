@@ -66,7 +66,7 @@ export default defineComponent({
 </script>
 
 <template>
-	<table v-if="sorted_expenses.length">
+	<table v-if="sorted_expenses.length" class="x-table">
 		<thead>
 			<tr>
 				<th

@@ -1,0 +1,14 @@
+.x-table {
+	&,
+	tr,
+	th,
+	td {
+		border: 1px solid #eee;
+		border-collapse: collapse;
+	}
+
+	th,
+	td {
+		padding: 0.25em 0.5em;
+	}
+}

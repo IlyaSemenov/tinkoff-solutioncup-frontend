@@ -38,7 +38,7 @@ export default defineComponent({
 
 <template>
 	<div>
-		<table>
+		<table class="x-table">
 			<thead>
 				<tr>
 					<th>Категория</th>

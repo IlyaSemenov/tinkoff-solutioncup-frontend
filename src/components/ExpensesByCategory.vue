@@ -49,7 +49,7 @@ export default defineComponent({
 
 <template>
 	<div v-if="categories.length">
-		<table>
+		<table class="x-table">
 			<thead>
 				<tr>
 					<th>Категория</th>
