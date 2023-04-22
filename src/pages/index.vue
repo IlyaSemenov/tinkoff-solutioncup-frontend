@@ -1,6 +1,6 @@
 <script lang="ts">
 import dayjs from "dayjs"
-import { isEqual } from "lodash"
+import { isEqual, sumBy } from "lodash"
 import { computed, defineComponent, reactive } from "vue"
 
 import NewExpenseForm from "@/components/NewExpenseForm.vue"
@@ -31,11 +31,13 @@ export default defineComponent({
 
 		const has_changed_params = computed(() => !isEqual(params, initial_params))
 
-		const expenses = computed(() =>
-			all_expenses.value.filter((exp) => {
+		const expenses = computed(() => {
+			const expenses = all_expenses.value.filter((exp) => {
 				return !params.category_id || params.category_id === exp.category_id
 			})
-		)
+			const total_amount = sumBy(expenses, "amount")
+			return { expenses, total_amount }
+		})
 
 		return {
 			dayjs,
@@ -55,7 +57,7 @@ export default defineComponent({
 	<h1>Мои расходы</h1>
 	<div v-if="all_expenses.length" class="expenses-with-filter">
 		<div>
-			<table v-if="expenses.length">
+			<table v-if="expenses.expenses.length">
 				<thead>
 					<th>Время добавления</th>
 					<th>Дата</th>
@@ -63,7 +65,7 @@ export default defineComponent({
 					<th>Категория</th>
 					<th>Описание</th>
 				</thead>
-				<tr v-for="exp in expenses" :key="exp.id">
+				<tr v-for="exp in expenses.expenses" :key="exp.id">
 					<td>{{ dayjs(exp.time).format("DD.MM.YYYY HH:mm") }}</td>
 					<td>{{ dayjs(exp.date).format("DD.MM.YYYY") }}</td>
 					<td class="amount">{{ exp.amount.toFixed(2) }}</td>
@@ -77,6 +79,10 @@ export default defineComponent({
 					<td :class="{ _empty: !exp.description }">
 						{{ exp.description || "(без описания)" }}
 					</td>
+				</tr>
+				<tr v-if="expenses.expenses.length > 1" class="total">
+					<td colspan="2" class="total-label">Итого</td>
+					<td class="amount">{{ expenses.total_amount.toFixed(2) }}</td>
 				</tr>
 			</table>
 			<div v-else>Ничего не найдено. Попробуйте сбросить фильтр.</div>
@@ -128,5 +134,13 @@ td.amount {
 
 td._empty {
 	font-style: italic;
+}
+
+tr.total {
+	font-weight: bold;
+}
+
+td.total-label {
+	text-align: right;
 }
 </style>
