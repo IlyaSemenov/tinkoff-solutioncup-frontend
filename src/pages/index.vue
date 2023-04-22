@@ -53,30 +53,32 @@ export default defineComponent({
 <template>
 	<h1>Мои расходы</h1>
 	<div v-if="expenses.length" class="expenses-with-filter">
-		<table>
-			<thead>
-				<th>Время добавления</th>
-				<th>Дата</th>
-				<th>Сумма</th>
-				<th>Категория</th>
-				<th>Описание</th>
-			</thead>
-			<tr v-for="exp in expenses" :key="exp.id">
-				<td>{{ dayjs(exp.time).format("DD.MM.YYYY HH:mm") }}</td>
-				<td>{{ dayjs(exp.date).format("DD.MM.YYYY") }}</td>
-				<td class="amount">{{ exp.amount.toFixed(2) }}</td>
-				<td :class="{ _empty: !exp.category_id }">
-					{{
-						exp.category_id
-							? category_for_id[exp.category_id].name
-							: "(без категории)"
-					}}
-				</td>
-				<td :class="{ _empty: !exp.description }">
-					{{ exp.description || "(без описания)" }}
-				</td>
-			</tr>
-		</table>
+		<div>
+			<table>
+				<thead>
+					<th>Время добавления</th>
+					<th>Дата</th>
+					<th>Сумма</th>
+					<th>Категория</th>
+					<th>Описание</th>
+				</thead>
+				<tr v-for="exp in expenses" :key="exp.id">
+					<td>{{ dayjs(exp.time).format("DD.MM.YYYY HH:mm") }}</td>
+					<td>{{ dayjs(exp.date).format("DD.MM.YYYY") }}</td>
+					<td class="amount">{{ exp.amount.toFixed(2) }}</td>
+					<td :class="{ _empty: !exp.category_id }">
+						{{
+							exp.category_id
+								? category_for_id[exp.category_id].name
+								: "(без категории)"
+						}}
+					</td>
+					<td :class="{ _empty: !exp.description }">
+						{{ exp.description || "(без описания)" }}
+					</td>
+				</tr>
+			</table>
+		</div>
 		<form @submit.prevent>
 			<h4>Фильтр</h4>
 			<div>Дата: с <input type="date" /> по <input type="date" /></div>
