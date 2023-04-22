@@ -39,6 +39,7 @@ export default defineComponent({
 
 		return {
 			dayjs,
+			all_expenses,
 			expenses,
 			all_categories,
 			category_for_id,
@@ -52,9 +53,9 @@ export default defineComponent({
 
 <template>
 	<h1>Мои расходы</h1>
-	<div v-if="expenses.length" class="expenses-with-filter">
+	<div v-if="all_expenses.length" class="expenses-with-filter">
 		<div>
-			<table>
+			<table v-if="expenses.length">
 				<thead>
 					<th>Время добавления</th>
 					<th>Дата</th>
@@ -78,6 +79,7 @@ export default defineComponent({
 					</td>
 				</tr>
 			</table>
+			<div v-else>Ничего не найдено. Попробуйте сбросить фильтр.</div>
 		</div>
 		<form @submit.prevent>
 			<h4>Фильтр</h4>
