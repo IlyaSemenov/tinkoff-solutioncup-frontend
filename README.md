@@ -23,6 +23,10 @@ pnpm start
 
 Открыть <http://localhost:4173/>
 
+## Выкладка на Github pages
+
+Ветка мастер автоматически собирается и выкладывается на <https://ilyasemenov.github.io/tinkoff-solutioncup-frontend/>
+
 ## Настройка IDE
 
 ### Recommended IDE Setup
