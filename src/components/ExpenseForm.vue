@@ -96,6 +96,8 @@ export default defineComponent({
 		</h3>
 		<div>
 			<input v-model="fields.date" type="date" placeholder="Дата" required />
+		</div>
+		<div>
 			<input
 				v-model.number="fields.amount"
 				type="number"
@@ -106,6 +108,8 @@ export default defineComponent({
 		</div>
 		<div>
 			<input v-model="fields.description" placeholder="Описание" />
+		</div>
+		<div>
 			<select v-model="fields.category_id">
 				<option :value="null">- Выберите категорию -</option>
 				<option v-for="cat in all_categories" :key="cat.id" :value="cat.id">
