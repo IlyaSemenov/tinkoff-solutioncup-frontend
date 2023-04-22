@@ -4,7 +4,12 @@ import { isEqual, sumBy } from "lodash"
 import { computed, defineComponent, reactive, ref } from "vue"
 
 import ExpenseForm from "@/components/ExpenseForm.vue"
-import { all_categories, all_expenses, category_for_id } from "@/services"
+import {
+	all_categories,
+	all_expenses,
+	category_for_id,
+	delete_expense as delete_expense_impl,
+} from "@/services"
 import { Expense } from "@/types"
 
 export default defineComponent({
@@ -42,12 +47,22 @@ export default defineComponent({
 
 		const editing_expense = ref<Expense>()
 
+		function edit_expense(exp: Expense) {
+			editing_expense.value = exp
+		}
+
 		function saved() {
 			editing_expense.value = undefined
 		}
 
 		function canceled() {
 			editing_expense.value = undefined
+		}
+
+		function delete_expense(exp: Expense) {
+			if (confirm(`Удалить расход?`)) {
+				delete_expense_impl(exp.id)
+			}
 		}
 
 		return {
@@ -59,9 +74,11 @@ export default defineComponent({
 			params,
 			reset_params,
 			has_changed_params,
+			edit_expense,
 			editing_expense,
 			saved,
 			canceled,
+			delete_expense,
 		}
 	},
 })
@@ -95,10 +112,8 @@ export default defineComponent({
 						{{ exp.description || "(без описания)" }}
 					</td>
 					<td>
-						<button type="button" @click="editing_expense = exp">
-							Изменить
-						</button>
-						<button type="button">Удалить</button>
+						<button type="button" @click="edit_expense(exp)">Изменить</button>
+						<button type="button" @click="delete_expense(exp)">Удалить</button>
 					</td>
 				</tr>
 				<tr v-if="expenses.expenses.length > 1" class="total">

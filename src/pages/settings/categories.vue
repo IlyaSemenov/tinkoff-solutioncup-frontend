@@ -16,11 +16,13 @@ export default defineComponent({
 				add_category_impl({ name })
 			}
 		}
+
 		function delete_category(cat: Category) {
 			if (confirm(`Удалить категорию ${cat.name}?`)) {
 				delete_category_impl(cat.id)
 			}
 		}
+
 		return { all_categories, add_category, delete_category }
 	},
 })
