@@ -5,13 +5,14 @@ import { ElementOf } from "ts-essentials"
 import { computed, defineComponent, reactive, ref } from "vue"
 
 import ExpensesByCategory from "@/components/ExpensesByCategory.vue"
+import ExpensesByDate from "@/components/ExpensesByDate.vue"
 import ExpensesTable from "@/components/ExpensesTable.vue"
 import { all_categories, all_expenses, category_for_id } from "@/services"
 
 export default defineComponent({
-	components: { ExpensesTable, ExpensesByCategory },
+	components: { ExpensesTable, ExpensesByCategory, ExpensesByDate },
 	setup() {
-		const view_types = ["table", "by_category"] as const
+		const view_types = ["table", "by_category", "by_date"] as const
 		type ViewType = ElementOf<typeof view_types>
 		/** текущее отображение */
 		const view_type = ref<ViewType>("table")
@@ -75,6 +76,10 @@ export default defineComponent({
 					><input v-model="view_type" type="radio" value="by_category" /> По
 					категориям</label
 				>
+				<label
+					><input v-model="view_type" type="radio" value="by_date" /> По
+					месяцам</label
+				>
 			</div>
 			<expenses-table
 				v-if="view_type === 'table'"
@@ -83,6 +88,10 @@ export default defineComponent({
 			/>
 			<expenses-by-category
 				v-else-if="view_type === 'by_category'"
+				:expenses="expenses"
+			/>
+			<expenses-by-date
+				v-else-if="view_type === 'by_date'"
 				:expenses="expenses"
 			/>
 		</div>
