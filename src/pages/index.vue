@@ -83,13 +83,18 @@ export default defineComponent({
 		</div>
 		<form @submit.prevent>
 			<h4>Фильтр</h4>
-			<div>Дата: с <input type="date" /> по <input type="date" /></div>
 			<div>
-				Время добавления: с <input type="datetime-local" /> по
-				<input type="datetime-local" />
+				<div>Дата:</div>
+				<div>с <input type="date" /></div>
+				<div>по <input type="date" /></div>
 			</div>
 			<div>
-				Категория:
+				<div>Время добавления:</div>
+				<div>- с <input type="datetime-local" /></div>
+				<div>- по <input type="datetime-local" /></div>
+			</div>
+			<div>
+				<div>Категория:</div>
 				<select v-model="params.category_id">
 					<option :value="null">- Выберите категорию -</option>
 					<option v-for="cat in all_categories" :key="cat.id" :value="cat.id">
