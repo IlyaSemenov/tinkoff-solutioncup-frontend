@@ -126,6 +126,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .expenses-with-filter {
 	display: flex;
+	gap: 1rem;
 }
 
 td.amount {
