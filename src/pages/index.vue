@@ -31,9 +31,15 @@ export default defineComponent({
 
 		const has_changed_params = computed(() => !isEqual(params, initial_params))
 
+		const expenses = computed(() =>
+			all_expenses.value.filter((exp) => {
+				return !params.category_id || params.category_id === exp.category_id
+			})
+		)
+
 		return {
 			dayjs,
-			expenses: all_expenses,
+			expenses,
 			all_categories,
 			category_for_id,
 			params,
