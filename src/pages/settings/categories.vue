@@ -38,7 +38,7 @@ export default defineComponent({
 
 <template>
 	<div>
-		<table class="x-table">
+		<table v-if="all_categories.length" class="x-table">
 			<thead>
 				<tr>
 					<th>Категория</th>
@@ -58,6 +58,7 @@ export default defineComponent({
 				</tr>
 			</tbody>
 		</table>
+		<div v-else>Вы пока не добавили ни одной категории.</div>
 		<button type="button" @click="add_category">Добавить категорию</button>
 	</div>
 </template>
