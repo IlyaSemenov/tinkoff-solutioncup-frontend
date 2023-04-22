@@ -11,4 +11,13 @@
 	td {
 		padding: 0.25em 0.5em;
 	}
+
+	th._sort {
+		text-decoration: underline;
+		text-decoration-style: dotted;
+		cursor: pointer;
+		&._active:after {
+			content: "▾";
+		}
+	}
 }

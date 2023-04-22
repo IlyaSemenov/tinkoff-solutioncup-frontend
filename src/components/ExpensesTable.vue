@@ -70,14 +70,14 @@ export default defineComponent({
 		<thead>
 			<tr>
 				<th
-					class="sort"
+					class="_sort"
 					:class="{ _active: sort_column === 'time' }"
 					@click="sort_column = 'time'"
 				>
 					Время добавления
 				</th>
 				<th
-					class="sort"
+					class="_sort"
 					:class="{ _active: sort_column === 'date' }"
 					@click="sort_column = 'date'"
 				>
@@ -131,15 +131,6 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
-th.sort {
-	text-decoration: underline;
-	text-decoration-style: dotted;
-	cursor: pointer;
-	&._active:after {
-		content: "▾";
-	}
-}
-
 td.amount {
 	text-align: right;
 }
