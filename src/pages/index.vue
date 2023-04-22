@@ -64,8 +64,8 @@ export default defineComponent({
 
 <template>
 	<h1>Мои расходы</h1>
-	<div class="expenses-with-filter">
-		<div>
+	<div class="content-with-filter">
+		<div class="content">
 			<div class="tabs">
 				<label
 					><input v-model="view_type" type="radio" value="table" />
@@ -117,9 +117,13 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
-.expenses-with-filter {
+.content-with-filter {
 	display: flex;
 	gap: 1rem;
+}
+
+.content {
+	flex-grow: 1;
 }
 
 .tabs {
