@@ -68,49 +68,53 @@ export default defineComponent({
 <template>
 	<table v-if="sorted_expenses.length">
 		<thead>
-			<th
-				class="sort"
-				:class="{ _active: sort_column === 'time' }"
-				@click="sort_column = 'time'"
-			>
-				Время добавления
-			</th>
-			<th
-				class="sort"
-				:class="{ _active: sort_column === 'date' }"
-				@click="sort_column = 'date'"
-			>
-				Дата
-			</th>
-			<th>Сумма</th>
-			<th>Категория</th>
-			<th>Описание</th>
-			<th />
+			<tr>
+				<th
+					class="sort"
+					:class="{ _active: sort_column === 'time' }"
+					@click="sort_column = 'time'"
+				>
+					Время добавления
+				</th>
+				<th
+					class="sort"
+					:class="{ _active: sort_column === 'date' }"
+					@click="sort_column = 'date'"
+				>
+					Дата
+				</th>
+				<th>Сумма</th>
+				<th>Категория</th>
+				<th>Описание</th>
+				<th />
+			</tr>
 		</thead>
-		<tr v-for="exp in sorted_expenses" :key="exp.id">
-			<td>{{ dayjs(exp.time).format("DD.MM.YYYY HH:mm") }}</td>
-			<td>{{ dayjs(exp.date).format("DD.MM.YYYY") }}</td>
-			<td class="amount">{{ exp.amount.toFixed(2) }}</td>
-			<td :class="{ _empty: !exp.category_id }">
-				{{
-					exp.category_id
-						? category_for_id[exp.category_id].name
-						: "(без категории)"
-				}}
-			</td>
-			<td :class="{ _empty: !exp.description }">
-				{{ exp.description || "(без описания)" }}
-			</td>
-			<td>
-				<button type="button" @click="edit_expense(exp)">Изменить</button>
-				<button type="button" @click="delete_expense(exp)">Удалить</button>
-			</td>
-		</tr>
-		<tr v-if="expenses.length > 1" class="total">
-			<td colspan="2" class="total-label">Итого</td>
-			<td class="amount">{{ total_amount.toFixed(2) }}</td>
-			<td colspan="3" />
-		</tr>
+		<tbody>
+			<tr v-for="exp in sorted_expenses" :key="exp.id">
+				<td>{{ dayjs(exp.time).format("DD.MM.YYYY HH:mm") }}</td>
+				<td>{{ dayjs(exp.date).format("DD.MM.YYYY") }}</td>
+				<td class="amount">{{ exp.amount.toFixed(2) }}</td>
+				<td :class="{ _empty: !exp.category_id }">
+					{{
+						exp.category_id
+							? category_for_id[exp.category_id].name
+							: "(без категории)"
+					}}
+				</td>
+				<td :class="{ _empty: !exp.description }">
+					{{ exp.description || "(без описания)" }}
+				</td>
+				<td>
+					<button type="button" @click="edit_expense(exp)">Изменить</button>
+					<button type="button" @click="delete_expense(exp)">Удалить</button>
+				</td>
+			</tr>
+			<tr v-if="expenses.length > 1" class="total">
+				<td colspan="2" class="total-label">Итого</td>
+				<td class="amount">{{ total_amount.toFixed(2) }}</td>
+				<td colspan="3" />
+			</tr>
+		</tbody>
 	</table>
 	<div v-else class="notification">
 		<template v-if="has_params"

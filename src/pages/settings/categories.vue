@@ -40,17 +40,23 @@ export default defineComponent({
 	<div>
 		<table>
 			<thead>
-				<th>Категория</th>
-				<th />
+				<tr>
+					<th>Категория</th>
+					<th />
+				</tr>
 			</thead>
-			<tr v-for="cat in all_categories" :key="cat.id">
-				<td>
-					<span class="name" @click="rename_category(cat)">{{ cat.name }}</span>
-				</td>
-				<td>
-					<button type="button" @click="delete_category(cat)">Удалить</button>
-				</td>
-			</tr>
+			<tbody>
+				<tr v-for="cat in all_categories" :key="cat.id">
+					<td>
+						<span class="name" @click="rename_category(cat)">{{
+							cat.name
+						}}</span>
+					</td>
+					<td>
+						<button type="button" @click="delete_category(cat)">Удалить</button>
+					</td>
+				</tr>
+			</tbody>
 		</table>
 		<button type="button" @click="add_category">Добавить категорию</button>
 	</div>

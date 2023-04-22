@@ -31,15 +31,19 @@ export default defineComponent({
 <template>
 	<table v-if="categories.length">
 		<thead>
-			<th>Категория</th>
-			<th>Общая сумма</th>
+			<tr>
+				<th>Категория</th>
+				<th>Общая сумма</th>
+			</tr>
 		</thead>
-		<tr v-for="cat in categories" :key="cat.category?.id || 'others'">
-			<td :class="{ _empty: !cat.category }">
-				{{ cat.category ? cat.category.name : "(без категории)" }}
-			</td>
-			<td class="amount">{{ cat.total_amount.toFixed(2) }}</td>
-		</tr>
+		<tbody>
+			<tr v-for="cat in categories" :key="cat.category?.id || 'others'">
+				<td :class="{ _empty: !cat.category }">
+					{{ cat.category ? cat.category.name : "(без категории)" }}
+				</td>
+				<td class="amount">{{ cat.total_amount.toFixed(2) }}</td>
+			</tr>
+		</tbody>
 	</table>
 	<div v-else>Нет данных. Попробуйте сбросить фильтр.</div>
 </template>
